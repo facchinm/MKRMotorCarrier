@@ -79,3 +79,8 @@ mc::PID pid2;
 
 mc::Battery battery;
 
+//this function gets called by the interrupt at <sampleRate>Hertz
+extern "C" void TC5_Handler (void) {
+  //controller.ping();
+  TC5->COUNT16.INTFLAG.bit.MC0 = 1;  //don't change this, it's part of the timer code
+}

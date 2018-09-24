@@ -69,13 +69,11 @@ void loop() {
   if (command == RESET || ((lastMessageReceived != 0) && (millis() - lastMessageReceived > 10000))) {
     reboot();
   }
-  if (command == PING) {
-    lastMessageReceived = millis();
-  }
   executeTimedEvents();
 }
 
 void receiveEvent(int howMany) {
+  lastMessageReceived = millis();
   command = Wire.read();
   if (Wire.available()) {
     target = Wire.read();
@@ -126,9 +124,9 @@ void receiveEvent(int howMany) {
         int16_t P16 = *((int16_t*)&buf[0]);
         int16_t I16 = *((int16_t*)&buf[2]);
         int16_t D16 = *((int16_t*)&buf[4]);
-        Fix16 P = ((Fix16)P16) / short(1000);
-        Fix16 I = ((Fix16)I16) / short(1000);
-        Fix16 D = ((Fix16)D16) / short(1000);
+        Fix16 P = (Fix16(P16)) / 1000;
+        Fix16 I = (Fix16(I16)) / 1000;
+        Fix16 D = (Fix16(D16)) / 1000;
         pid_control[target].setGains(P, I , D);
         break;
       }
@@ -139,13 +137,13 @@ void receiveEvent(int howMany) {
       pid_control[target].setControlMode((cl_control)value);
       break;
     case SET_POSITION_SETPOINT_CL_MOTOR:
-      pid_control[target].setSetpoint(TARGET_POSITION, Fix16(value * 1.0));
+      pid_control[target].setSetpoint(TARGET_POSITION, Fix16(float(value)));
       break;
     case SET_VELOCITY_SETPOINT_CL_MOTOR:
-      pid_control[target].setSetpoint(TARGET_VELOCITY, Fix16(value * 1.0));
+      pid_control[target].setSetpoint(TARGET_VELOCITY, Fix16(float(value)));
       break;
     case SET_MAX_ACCELERATION_CL_MOTOR: {
-        pid_control[target].setMaxAcceleration(Fix16(value * 1.0));
+        pid_control[target].setMaxAcceleration(Fix16(float(value)));
         break;
       }
     case SET_MAX_VELOCITY_CL_MOTOR:

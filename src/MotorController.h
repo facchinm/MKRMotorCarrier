@@ -19,6 +19,8 @@
 
 #include "Arduino.h"
 
+void tcConfigure(int sampleRate);
+
 namespace mc {
 
 class MotorController {

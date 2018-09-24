@@ -44,6 +44,7 @@ int mc::MotorController::begin() {
   Wire.begin();
   String version = getFWVersion();
   if (version.c_str()[0] == '0') {
+    tcConfigure(1000); //configure the timer to run at <sampleRate/1000>Hertz
     return 1;
   }
   return 0;
