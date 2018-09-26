@@ -3,10 +3,12 @@
 
 static uint8_t counter = 0;
 
-TimedEvent* events[10] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+#define EVENTS_MAX      5
+
+TimedEvent* events[EVENTS_MAX] = {NULL, NULL, NULL, NULL, NULL};
 
 void executeTimedEvents() {
-  for (int i = 0; events[i] != NULL; i++) {
+  for (int i = 0; events[i] != NULL && i < EVENTS_MAX; i++) {
     events[i]->tryExec();
   }
 }

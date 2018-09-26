@@ -59,10 +59,10 @@ class PIDWrapper {
 
     void setLimits(int16_t minDuty, int16_t maxDuty) {
       if (mode == CL_POSITION) {
-        pid_pos->SetOutputLimits(float(minDuty), float(maxDuty));
+        pid_pos->SetOutputLimits((float)minDuty, (float)maxDuty);
       }
       if (mode == CL_VELOCITY) {
-        pid_velo->SetOutputLimits(float(minDuty), float(maxDuty));
+        pid_velo->SetOutputLimits((float)minDuty, (float)maxDuty);
       }
       run();
     };
@@ -89,7 +89,6 @@ class PIDWrapper {
     PID* pid_velo;
     PID* pid_pos;
     DCMotor* motor;
-    bool disabled = true;
 };
 
 #endif

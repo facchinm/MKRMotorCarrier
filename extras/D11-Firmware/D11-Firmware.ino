@@ -78,18 +78,20 @@ void receiveEvent(int howMany) {
   } else {
     return;
   }
-  int value = 0;
-
 
   if (!Wire.available()) {
     return;
   }
+
+  int value = 0;
 
   uint8_t buf[8];
   int i = 0;
   while (Wire.available()) {
     buf[i++] = (uint8_t)Wire.read();
   }
+
+  noInterrupts();
 
   // copies the bytes to int
   memcpy(&value, buf, sizeof(value));
@@ -150,6 +152,8 @@ void receiveEvent(int howMany) {
       pid_control[target].setLimits(*((int16_t*)&buf[0]), *((int16_t*)&buf[2]));
       break;
   }
+
+  interrupts();
 }
 
 void requestEvent() {
@@ -157,7 +161,7 @@ void requestEvent() {
   if (irq_enabled) {
     digitalWrite(IRQ_PIN, HIGH);
   }
-
+  noInterrupts();
   // Always reply with irq status
   Wire.write(irq_status);
 
@@ -191,6 +195,7 @@ void requestEvent() {
       irq_status = 0;
       break;
   }
+  interrupts();
 }
 
 void requestAttention(int cause) {

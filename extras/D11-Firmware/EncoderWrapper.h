@@ -14,7 +14,7 @@ class EncoderWrapper {
     }
     void setIrqOnVelocity(long value) {
       if (value != 0) {
-        targetVelocity = float(value & 0xFFFFFF);
+        targetVelocity = (float)(value & 0xFFFFFF);
         //irqRatio = float(value >> 24) / 100.0f;
         irqVelocityEnabled = true;
       } else {
