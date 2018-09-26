@@ -1,7 +1,4 @@
 #include "src/Encoder/Encoder.h"
-#include "src/FpF.hpp"
-
-#define Fix16 mn::MFixedPoint::FpF32<8>
 
 class EncoderWrapper {
   public:
@@ -17,8 +14,8 @@ class EncoderWrapper {
     }
     void setIrqOnVelocity(long value) {
       if (value != 0) {
-        targetVelocity = Fix16(value & 0xFFFFFF);
-        //irqRatio = Fix16(value >> 24) / 100.0f;
+        targetVelocity = float(value & 0xFFFFFF);
+        //irqRatio = float(value >> 24) / 100.0f;
         irqVelocityEnabled = true;
       } else {
         irqVelocityEnabled = false;
@@ -26,13 +23,13 @@ class EncoderWrapper {
     }
     bool underflow;
     bool overflow;
-    Fix16 velocity;
-    Fix16 position;
-    Fix16 irqRatio = 2.0f;
+    float velocity;
+    float position;
+    float irqRatio = 2.0f;
     bool irqCountEnabled = false;
     bool irqVelocityEnabled = false;
     int targetCount = -1;
-    Fix16 targetVelocity = -1.0;
+    float targetVelocity = -1.0;
   private:
     Encoder* enc;
 };

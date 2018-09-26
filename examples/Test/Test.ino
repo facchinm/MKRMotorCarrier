@@ -32,7 +32,7 @@ void setup() {
 
   // Read the encoder connected to Motor1 until it reaches 36000 counts
   int motor1Pos = 0;
-  while (motor1Pos < 2000) {
+  while (motor1Pos < 20000) {
     motor1Pos = encoder1.getRawCount();
     Serial.println(motor1Pos);
     // Remember to call ping() here and there!
@@ -45,7 +45,7 @@ void setup() {
   // This way, you can program the motor to reach a certain position or velocity without any further intervention.
   // The PID can be carefully tuned if a particular profile is needed.
   pid1.setControlMode(CL_POSITION);
-  pid1.setGains(25, 0, 3);
+  pid1.setGains(25, 12, 40);
   pid1.setMaxAcceleration(40000);
   pid1.setSetpoint(TARGET_POSITION, -20000);
 }

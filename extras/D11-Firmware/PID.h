@@ -5,8 +5,6 @@
 #include "src/PID/PID_v1.h"
 #include "DCMotor.h"
 
-#define Fix16 mn::MFixedPoint::FpF32<8>
-
 typedef enum {
   CL_OPEN_LOOP = 0,
   CL_POSITION,
@@ -21,9 +19,9 @@ typedef enum {
 class PIDWrapper {
 
   public:
-    PIDWrapper(Fix16& inputpos, Fix16& inputvelo, DCMotor* motor, int index, int periodms_pos, int periodms_velo);
+    PIDWrapper(float& inputpos, float& inputvelo, DCMotor* motor, int index, int periodms_pos, int periodms_velo);
 
-    void setGains(Fix16 kp, Fix16 ki, Fix16 kd) {
+    void setGains(float kp, float ki, float kd) {
       if (this->mode == CL_VELOCITY) {
         pid_velo->SetTunings(kp, ki, kd);
       }
@@ -40,7 +38,7 @@ class PIDWrapper {
       run();
     };
 
-    void setSetpoint(cl_target control_target, Fix16 target) {
+    void setSetpoint(cl_target control_target, float target) {
       if (control_target == TARGET_VELOCITY) {
         this->targetvelo = target;
       } else if (control_target == TARGET_POSITION) {
@@ -49,22 +47,22 @@ class PIDWrapper {
       run();
     };
 
-    void setMaxAcceleration(Fix16 maxAccel) {
+    void setMaxAcceleration(float maxAccel) {
       this->maxAcceleration = maxAccel;
       run();
     };
 
-    void setMaxVelocity(Fix16 maxVelocity) {
+    void setMaxVelocity(float maxVelocity) {
       this->maxVelocity = maxVelocity;
       run();
     };
 
     void setLimits(int16_t minDuty, int16_t maxDuty) {
       if (mode == CL_POSITION) {
-        pid_pos->SetOutputLimits(Fix16(minDuty), Fix16(maxDuty));
+        pid_pos->SetOutputLimits(float(minDuty), float(maxDuty));
       }
       if (mode == CL_VELOCITY) {
-        pid_velo->SetOutputLimits(Fix16(minDuty), Fix16(maxDuty));
+        pid_velo->SetOutputLimits(float(minDuty), float(maxDuty));
       }
       run();
     };
@@ -80,14 +78,14 @@ class PIDWrapper {
     };
 
     cl_control mode = CL_VELOCITY;
-    Fix16 targetpos = 0.0;
-    Fix16 targetvelo = 0.0;
-    Fix16 maxAcceleration;
-    Fix16 maxVelocity;
+    float targetpos = 0.0;
+    float targetvelo = 0.0;
+    float maxAcceleration;
+    float maxVelocity;
     int maxDuty = 100;
     int minDuty = 0;
-    Fix16 actualDuty;
-    Fix16 velocmd = 0.0f;
+    float actualDuty;
+    float velocmd = 0.0f;
     PID* pid_velo;
     PID* pid_pos;
     DCMotor* motor;

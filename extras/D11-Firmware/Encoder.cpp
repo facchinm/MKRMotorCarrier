@@ -26,12 +26,12 @@ void populateRegisters_wrapper(void* arg) {
 
     //for now just use the difference in count since the last period as this is more than sufficient for now for use as angular velocity
     int16_t diff = value - lastTimestampedVal[i];
-    obj[i]->velocity = Fix16(diff);
+    obj[i]->velocity = float(diff);
     lastTimestampedVal[i] = value;
-    obj[i]->position = Fix16(value * 1.0f);
+    obj[i]->position = float(value * 1.0f);
 
-    // abs doesn't play well with Fix16 (missing an overload for minus)
-    Fix16 ratioToTargetVelocityPercent = ((Fix16(obj[i]->velocity) - obj[i]->targetVelocity) * Fix16(100.0f)) / obj[i]->targetVelocity;
+    // abs doesn't play well with float (missing an overload for minus)
+    float ratioToTargetVelocityPercent = ((float(obj[i]->velocity) - obj[i]->targetVelocity) * float(100.0f)) / obj[i]->targetVelocity;
 
     if (obj[i]->irqVelocityEnabled && (ratioToTargetVelocityPercent < obj[i]->irqRatio) && (ratioToTargetVelocityPercent > (obj[i]->irqRatio * -1.0f) )) {
       requestAttention(ENCODER_VELOCITY_REACHED);

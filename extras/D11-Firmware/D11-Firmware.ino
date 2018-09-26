@@ -7,12 +7,10 @@
 #include "Events.h"
 #include "PID.h"
 
-#define Fix16 mn::MFixedPoint::FpF32<8>
-
 // compile me with target mkrmotorshield:samd:mkrmotorshield:bootloader=0kb,pinmap=complete,lto=disabled during development
 // compile me with target mkrmotorshield:samd:mkrmotorshield:bootloader=4kb,pinmap=complete,lto=enabled for release
 
-const char* FW_VERSION = "0.08";
+const char* FW_VERSION = "0.09";
 
 DCMotor dcmotors[2] = {
   DCMotor(MOTOR_1_COUNTER, MOTOR_1_PIN_A, MOTOR_1_PIN_B),
@@ -124,9 +122,9 @@ void receiveEvent(int howMany) {
         int16_t P16 = *((int16_t*)&buf[0]);
         int16_t I16 = *((int16_t*)&buf[2]);
         int16_t D16 = *((int16_t*)&buf[4]);
-        Fix16 P = (Fix16(P16)) / 1000;
-        Fix16 I = (Fix16(I16)) / 1000;
-        Fix16 D = (Fix16(D16)) / 1000;
+        float P = (float(P16)) / 1000;
+        float I = (float(I16)) / 1000;
+        float D = (float(D16)) / 1000;
         pid_control[target].setGains(P, I , D);
         break;
       }
@@ -137,17 +135,16 @@ void receiveEvent(int howMany) {
       pid_control[target].setControlMode((cl_control)value);
       break;
     case SET_POSITION_SETPOINT_CL_MOTOR:
-      pid_control[target].setSetpoint(TARGET_POSITION, Fix16(float(value)));
+      pid_control[target].setSetpoint(TARGET_POSITION, float(value));
       break;
     case SET_VELOCITY_SETPOINT_CL_MOTOR:
-      pid_control[target].setSetpoint(TARGET_VELOCITY, Fix16(float(value)));
+      pid_control[target].setSetpoint(TARGET_VELOCITY, float(value));
       break;
-    case SET_MAX_ACCELERATION_CL_MOTOR: {
-        pid_control[target].setMaxAcceleration(Fix16(float(value)));
-        break;
-      }
+    case SET_MAX_ACCELERATION_CL_MOTOR:
+      pid_control[target].setMaxAcceleration(float(value));
+      break;
     case SET_MAX_VELOCITY_CL_MOTOR:
-      pid_control[target].setMaxVelocity(Fix16(value * 1.0));
+      pid_control[target].setMaxVelocity(float(value * 1.0));
       break;
     case SET_MIN_MAX_DUTY_CYCLE_CL_MOTOR:
       pid_control[target].setLimits(*((int16_t*)&buf[0]), *((int16_t*)&buf[2]));
