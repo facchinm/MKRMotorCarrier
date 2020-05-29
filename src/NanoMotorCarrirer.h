@@ -1,5 +1,4 @@
-/*
-  ArduinoMotorCarrier.h - Library for Arduino Motor Shields
+/*- Library for Arduino Motor Shields
   Copyright (c) 2018-2019 Arduino AG.  All right reserved.
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -14,37 +13,10 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef __ARDUINOMOTORSHIELD__
-#define __ARDUINOMOTORSHIELD__
+#ifndef __NANOMOTORSHIELD__
+#define __NANOMOTORSHIELD__
 
-#include <Wire.h>
-#include "Encoder.h"
-#include "Battery.h"
-#include "DCMotor.h"
-#include "ServoMotor.h"
-#include "MotorController.h"
-#include "Common.h"
-#include "PID.h"
-#include "src/FpF.hpp"
-
-extern mc::MotorController controller;
-
-extern mc::ServoMotor servo1;
-extern mc::ServoMotor servo2;
-extern mc::ServoMotor servo3;
-extern mc::ServoMotor servo4;
-
-extern mc::DCMotor M1;
-extern mc::DCMotor M2;
-extern d21::DCMotor M3;
-extern d21::DCMotor M4;
-
-extern mc::Encoder encoder1;
-extern mc::Encoder encoder2;
-
-extern mc::PID pid1;
-extern mc::PID pid2;
-
-extern mc::Battery battery;
+#warning "This Header is going to be deprecated please use ArduinoMotorCarrier.h"
+#include "ArduinoMotorCarrier.h"
 
 #endif

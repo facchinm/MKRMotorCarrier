@@ -2,7 +2,7 @@
 #include "Events.h"
 #include "Wire.h"
 
-#define SCALE_FACTOR  (77)
+#define SCALE_FACTOR  (236)
 
 void Battery::readBattery() {
   index++;
